@@ -156,6 +156,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.local
+*.env
 
 # Spyder project settings
 .spyderproject
@@ -216,3 +218,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.angular/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker
+*.log
+
+# Database
+*.sqlite3
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
