@@ -1,0 +1,150 @@
+
+services:
+      #PostgreSQL Database
+      postgres:
+        image: postgres:15-alpine
+        env_file: 
+          - .env
+        container_name: paideia_postgres
+        environment: 
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        ports: 
+          - "5432:5432"
+        volumes: 
+          - postgres_data:/var/lib/postgresql/data
+          - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+        networks: 
+          - paideia-network
+        healthcheck:
+          test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+          interval: 10s
+          timeout: 5s
+          retries: 5
+
+      #Authentication service
+      auth-service:
+        build:
+          context: ./backend/auth-service
+          dockerfile: Dockerfile
+        container_name: paideia-auth
+        env_file: 
+          - .env
+        environment: 
+          DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+          JWT_SECRET: ${JWT_SECRET}
+          JWT_EXPIRATION: 1800
+        ports: 
+          - "8001:8000"
+        volumes:
+          - ./backend/auth-service:/app
+        depends_on:
+          postgres:
+            condition: service_healthy
+        networks:
+          - paideia-network
+        command: python manage.py runserver 0.0.0.0:8000
+
+      #Students service
+      student-service:
+        build: 
+          context: ./backend/student-service
+          dockerfile: Dockerfile
+        container_name: paideia-students
+        environment: 
+          DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+          AUTH_SERVICE_URL: http://auth-service:8000
+        ports:
+          - "8002:8000"
+        volumes:
+          - ./backend/student-service:/app
+        depends_on:
+          postgres: 
+            condition: service_healthy
+        networks:
+          - paideia-network
+        command: python manage.py runserver 0.0.0.0:8000
+
+      #Diagnostics service
+      diagnostic-service:
+        build: 
+          context: ./backend/diagnostic-service
+          dockerfile: Dockerfile
+        container_name: paideia-diagnostics
+        environment: 
+          DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+          AUTH_SERVICE_URL: http://auth-service:8000
+        ports:
+          - "8003:8000"
+        volumes:
+          - ./backend/diagnostic-service:/app
+        depends_on:
+          postgres: 
+            condition: service_healthy
+        networks: 
+          - paideia-network
+        command: python manage.py runserver 0.0.0.0:8000
+
+      #Evaluation service
+      evaluation-service:
+        build: 
+          context: ./backend/evaluation-service
+          dockerfile: Dockerfile
+        container_name: paideia-evaluations
+        environment:
+          DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+          AUTH_SERVICE_URL: http://auth-service:8000
+        ports:
+          - "8004:8000"
+        volumes:
+          - ./backend/evaluation-service:/app
+        depends_on:
+          postgres:
+            condition: service_healthy
+        networks:
+          - paideia-network
+        command: python manage.py runserver 0.0.0.0:8000
+
+      # NGINX Gateway
+      nginx:
+        image: nginx:alpine
+        container_name: paideia-gateway
+        restart: always
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+          - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+        depends_on:
+          - auth-service
+          - student-service
+          - diagnostic-service
+          - evaluation-service
+          - frontend
+        networks:
+          - paideia-network
+
+      #Frontend Angular
+      frontend:
+        build:
+          context: ./frontend
+          dockerfile: Dockerfile
+        container_name: paideia-frontend
+        ports:
+          - "4200:4200"
+        volumes:
+          - ./frontend:/app
+          - /app/node_modules
+        networks: 
+          - paideia-network
+        command: npm start
+
+volumes: 
+  postgres_data:
+    driver: local
+
+networks:
+  paideia-network:
+    driver: bridge

@@ -233,6 +233,8 @@ yarn-error.log
 
 # Docker
 *.log
+.docker
+postgres_data/
 
 # Database
 *.sqlite3
