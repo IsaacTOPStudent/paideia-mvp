@@ -1,0 +1,9 @@
+    <div class="test-container">
+      <h2>PAIDEIA - Test de Conexión MVP</h2>
+      @for (service of services(); track $index) {
+        <div class="status">
+          <h3>{{ service.name }}</h3>
+          <p [class]="service.status">{{ service.message }}</p>
+        </div>
+      }
+    </div>

@@ -2,6 +2,9 @@
 __pycache__/
 *.py[codz]
 *$py.class
+*.pyc
+*.pyo
+*.pyd
 
 # C extensions
 *.so
@@ -60,6 +63,8 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+media/
+staticfiles/
 
 # Flask stuff:
 instance/
@@ -149,6 +154,7 @@ activemq-data/
 
 # Environments
 .env
+.env.*
 .envrc
 .venv
 env/
@@ -224,6 +230,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 .angular/
+.angular/cache
 
 # IDEs
 .vscode/
