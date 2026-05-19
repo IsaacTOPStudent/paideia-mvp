@@ -1,0 +1,13 @@
+    .test-container {
+      padding: 2rem;
+      font-family: Arial, sans-serif;
+    }
+    .status {
+      margin: 1rem 0;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .success { color: green; }
+    .error { color: red; }
+    .pending { color: orange; }
