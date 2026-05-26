@@ -18,14 +18,14 @@ class TestAuditAPI:
             email="admin@test.com",
             password="Admin123*",
             full_name="Administrador",
-            role="ADMIN"
+            role="ADMIN",
         )
 
         self.teacher = UserModel.objects.create_user(
             email="teacher@test.com",
             password="Teacher123*",
             full_name="Docente",
-            role="TEACHER"
+            role="TEACHER",
         )
 
     def authenticate_admin(self):
@@ -85,7 +85,7 @@ class TestAuditAPI:
             "role": "PSYCHOLOGIST"
         }
 
-        response = self.client.post(USERS_URL, payload, format="json")
+        response = self.client.post(f"{USERS_URL}create/", payload, format="json")
 
         assert response.status_code == 201
 
@@ -104,8 +104,8 @@ class TestAuditAPI:
             "role": "SECRETARY"
         }
 
-        response = self.client.put(
-            f"{USERS_URL}{self.teacher.id}/",
+        response = self.client.patch(
+            f"{USERS_URL}{self.teacher.id}/update/",
             payload,
             format="json"
         )
@@ -122,7 +122,7 @@ class TestAuditAPI:
     def test_deactivate_user_creates_audit_log(self):
         self.authenticate_admin()
 
-        response = self.client.delete(f"{USERS_URL}{self.teacher.id}/")
+        response = self.client.patch(f"{USERS_URL}{self.teacher.id}/deactivate/")
 
         assert response.status_code == 200
 
@@ -137,9 +137,9 @@ class TestAuditAPI:
         self.authenticate_admin()
 
         # desactivar primero
-        self.client.delete(f"{USERS_URL}{self.teacher.id}/")
+        self.client.patch(f"{USERS_URL}{self.teacher.id}/deactivate/")
 
-        response = self.client.post(
+        response = self.client.patch(
             f"{USERS_URL}{self.teacher.id}/activate/"
         )
 
