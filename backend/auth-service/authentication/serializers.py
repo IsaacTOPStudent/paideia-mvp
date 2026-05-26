@@ -98,6 +98,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Custom claims
         token['email'] = user.email
         token['role'] = user.role
+        token["status"] = user.status
         token['full_name'] = user.full_name
 
         return token
@@ -119,6 +120,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             'email': user.email,
             'full_name': user.full_name,
             'role': user.role,
+            'status': user.status
         }
 
         return data

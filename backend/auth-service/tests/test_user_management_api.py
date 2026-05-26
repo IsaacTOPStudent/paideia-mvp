@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from authentication.models import UserModel
 
 USERS_URL = '/api/auth/users/'
-
+TOKEN_URL = '/api/auth/login/'
 
 @pytest.mark.django_db
 class TestUserManagementAPI:
@@ -19,7 +19,6 @@ class TestUserManagementAPI:
             password="Admin123*",
             full_name="Administrador",
             role="ADMIN",
-            status="ACTIVE"
         )
 
         # Non-admin user
@@ -28,24 +27,35 @@ class TestUserManagementAPI:
             password="Teacher123*",
             full_name="Docente",
             role="TEACHER",
-            status="ACTIVE"
         )
 
-        refresh = cast(RefreshToken, RefreshToken.for_user(self.admin))
-        refresh_teacher = cast(RefreshToken, RefreshToken.for_user(self.teacher))
-
-        self.admin_token = str(refresh.access_token)
-        self.teacher_token = str(refresh_teacher.access_token)
-
-    # ==========================================
     # HELPERS
-    # ==========================================
 
     def authenticate_admin(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.admin_token}")
+        response = self.client.post(
+            TOKEN_URL,
+            {
+                "email": "admin@test.com",
+                "password": "Admin123*"
+            },
+            format="json"
+        )
+
+        access = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
     def authenticate_teacher(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.teacher_token}")
+        response = self.client.post(
+            TOKEN_URL,
+            {
+                "email": "teacher@test.com",
+                "password": "Teacher123*"
+            },
+            format="json"
+        )
+
+        access = response.data["access"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
 
     # ==========================================
     # POST /users/
@@ -61,7 +71,7 @@ class TestUserManagementAPI:
             "role": "PSYCHOLOGIST"
         }
 
-        response = self.client.post(USERS_URL, payload, format="json")
+        response = self.client.post(f"{USERS_URL}create/", payload, format="json")
 
         assert response.status_code == 201
         assert response.data["message"] == "Usuario creado exitosamente"
@@ -77,7 +87,7 @@ class TestUserManagementAPI:
             "role": "SECRETARY"
         }
 
-        response = self.client.post(USERS_URL, payload, format="json")
+        response = self.client.post(f"{USERS_URL}create/", payload, format="json")
 
         assert response.status_code == 403
 
@@ -91,7 +101,7 @@ class TestUserManagementAPI:
             "role": "TEACHER"
         }
 
-        response = self.client.post(USERS_URL, payload, format="json")
+        response = self.client.post(f"{USERS_URL}create/", payload, format="json")
 
         assert response.status_code == 409
 
@@ -105,7 +115,7 @@ class TestUserManagementAPI:
             "role": "INVALID_ROLE"
         }
 
-        response = self.client.post(USERS_URL, payload, format="json")
+        response = self.client.post(f"{USERS_URL}create/", payload, format="json")
 
         assert response.status_code == 400
 
@@ -183,8 +193,8 @@ class TestUserManagementAPI:
             "role": "SECRETARY"
         }
 
-        response = self.client.put(
-            f"{USERS_URL}{self.teacher.pk}/",
+        response = self.client.patch(
+            f"{USERS_URL}{self.teacher.pk}/update/",
             payload,
             format="json"
         )
@@ -217,8 +227,8 @@ class TestUserManagementAPI:
             "full_name": "Ghost"
         }
 
-        response = self.client.put(
-            f"{USERS_URL}9999/",
+        response = self.client.patch(
+            f"{USERS_URL}9999/update/",
             payload,
             format="json"
         )
@@ -232,8 +242,8 @@ class TestUserManagementAPI:
             "role": "INVALID_ROLE"
         }
 
-        response = self.client.put(
-            f"{USERS_URL}{self.teacher.pk}/",
+        response = self.client.patch(
+            f"{USERS_URL}{self.teacher.pk}/update/",
             payload,
             format="json"
         )
@@ -247,7 +257,7 @@ class TestUserManagementAPI:
     def test_admin_can_deactivate_user(self):
         self.authenticate_admin()
 
-        response = self.client.delete(f"{USERS_URL}{self.teacher.pk}/")
+        response = self.client.patch(f"{USERS_URL}{self.teacher.pk}/deactivate/")
 
         assert response.status_code == 200
         assert response.data['data']['status'] == 'INACTIVE'
@@ -259,21 +269,21 @@ class TestUserManagementAPI:
     def test_non_admin_cannot_deactivate_user(self):
         self.authenticate_teacher()
 
-        response = self.client.delete(f"{USERS_URL}{self.admin.pk}/")
+        response = self.client.patch(f"{USERS_URL}{self.admin.pk}/deactivate/")
 
         assert response.status_code == 403
 
     def test_deactivate_nonexistent_user(self):
         self.authenticate_admin()
 
-        response = self.client.delete(f"{USERS_URL}9999/")
+        response = self.client.patch(f"{USERS_URL}9999/deactivate/")
 
         assert response.status_code == 404
 
     def test_admin_cannot_deactivate_self(self):
         self.authenticate_admin()
 
-        response = self.client.delete(f"{USERS_URL}{self.admin.pk}/")
+        response = self.client.patch(f"{USERS_URL}{self.admin.pk}/deactivate/")
 
         assert response.status_code == 400
 
@@ -283,7 +293,7 @@ class TestUserManagementAPI:
         self.teacher.status = "INACTIVE"
         self.teacher.save()
 
-        response = self.client.post(f"{USERS_URL}{self.teacher.pk}/activate/")
+        response = self.client.patch(f"{USERS_URL}{self.teacher.pk}/activate/")
         assert response.status_code == 200
         assert response.data['data']['status'] == 'ACTIVE'
         assert response.data['data']['status_display'] == 'Activo'
