@@ -1,0 +1,173 @@
+.students-container {
+  padding: 2rem;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+/* HEADER */
+
+.students-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.students-header h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #1e293b;
+}
+
+.students-header p {
+  color: #64748b;
+  margin-top: 0.3rem;
+}
+
+/* BUTTON */
+
+.btn-create {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.4rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.btn-create:hover {
+  transform: translateY(-2px);
+  background: #1d4ed8;
+}
+
+/* SEARCH */
+
+.search-container {
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid #dbe2ea;
+  font-size: 1rem;
+  background: white;
+}
+
+/* GRID */
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+/* CARD */
+
+.student-card {
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transition: 0.2s ease;
+}
+
+.student-card:hover {
+  transform: translateY(-4px);
+}
+
+/* TOP */
+
+.student-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* AVATAR */
+
+.avatar {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* STATUS */
+
+.status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+/* BODY */
+
+.student-body {
+  margin-top: 1.2rem;
+}
+
+.student-body h3 {
+  margin-bottom: 1rem;
+  color: #0f172a;
+}
+
+.student-body p {
+  margin: 0.5rem 0;
+  color: #475569;
+}
+
+/* ACTIONS */
+
+.student-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-view,
+.btn-edit {
+  flex: 1;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-view {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.btn-edit {
+  background: #f8fafc;
+  color: #334155;
+}
+
+/* EMPTY */
+
+.empty-state {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  color: #64748b;
+}

@@ -1,0 +1,279 @@
+<div class="create-container">
+
+  <div class="create-header">
+
+    <h1>Registrar estudiante</h1>
+
+    <p>
+      Completa la información del estudiante
+    </p>
+
+  </div>
+
+  <form
+    class="student-form"
+    [formGroup]="studentForm"
+    (ngSubmit)="registerStudent()"
+  >
+
+    <!-- DATOS PERSONALES -->
+
+    <div class="form-section">
+
+      <h2>Información personal</h2>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Nombres</label>
+
+          <input
+            type="text"
+            formControlName="first_name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Apellidos</label>
+
+          <input
+            type="text"
+            formControlName="last_name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Tipo documento</label>
+
+          <select formControlName="document_type">
+
+            <option value="TI">TI</option>
+            <option value="CC">CC</option>
+            <option value="CE">CE</option>
+            <option value="PA">PA</option>
+
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Número documento</label>
+
+          <input
+            type="text"
+            formControlName="document_number"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Fecha nacimiento</label>
+
+          <input
+            type="date"
+            formControlName="date_of_birth"
+          >
+        </div>
+
+        <div class="form-group">
+          <label>Género</label>
+
+          <select formControlName="gender">
+
+            <option value="">Seleccione</option>
+
+            <option value="MALE">
+              Masculino
+            </option>
+
+            <option value="FEMALE">
+              Femenino
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ACADÉMICO -->
+
+    <div class="form-section">
+
+      <h2>Información académica</h2>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>Grado</label>
+
+          <select formControlName="grade">
+
+            <option value="">Seleccione</option>
+
+            <option value="Preescolar">Preescolar</option>
+            <option value="1°">1°</option>
+            <option value="2°">2°</option>
+            <option value="3°">3°</option>
+            <option value="4°">4°</option>
+            <option value="5°">5°</option>
+            <option value="6°">6°</option>
+            <option value="7°">7°</option>
+            <option value="8°">8°</option>
+            <option value="9°">9°</option>
+            <option value="10°">10°</option>
+            <option value="11°">11°</option>
+
+          </select>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Sección</label>
+
+          <input
+            type="text"
+            formControlName="section"
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ACUDIENTE -->
+
+    <div class="form-section">
+
+      <h2>Acudiente</h2>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>Nombre acudiente</label>
+
+          <input
+            type="text"
+            formControlName="guardian_name"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Teléfono</label>
+
+          <input
+            type="text"
+            formControlName="guardian_phone"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Email</label>
+
+          <input
+            type="email"
+            formControlName="guardian_email"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Parentesco</label>
+
+          <input
+            type="text"
+            formControlName="guardian_relationship"
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DIRECCIÓN -->
+
+    <div class="form-section">
+
+      <h2>Ubicación</h2>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+
+          <label>Dirección</label>
+
+          <input
+            type="text"
+            formControlName="address"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Barrio</label>
+
+          <input
+            type="text"
+            formControlName="neighborhood"
+          >
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Estrato</label>
+
+          <input
+            type="number"
+            formControlName="socioeconomic_stratum"
+          >
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- CONSENT -->
+
+    <div class="consent-box">
+
+      <label>
+
+        <input
+          type="checkbox"
+          formControlName="consent_given"
+        >
+
+        Autorizo el tratamiento de datos del estudiante.
+
+      </label>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <button
+      class="submit-btn"
+      type="submit"
+      [disabled]="loading"
+    >
+
+      {{ loading ? 'Registrando...' : 'Registrar estudiante' }}
+
+    </button>
+
+  </form>
+
+</div>

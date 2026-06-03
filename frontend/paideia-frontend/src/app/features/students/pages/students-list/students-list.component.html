@@ -1,0 +1,118 @@
+<div class="students-container">
+
+  <!-- HEADER -->
+  <div class="students-header">
+
+    <div>
+      <h1>Estudiantes</h1>
+      <p>
+        Gestión y seguimiento estudiantil
+      </p>
+    </div>
+
+    <button
+      class="btn-create"
+      routerLink="/students/create"
+    >
+      + Nuevo estudiante
+    </button>
+
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-container">
+
+    <input
+  type="text"
+  placeholder="Buscar por nombre o documento..."
+  class="search-input"
+  (input)="filterStudents($event)"
+  >
+
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div
+  *ngIf="filteredStudents.length === 0"
+  class="empty-state"
+  >
+
+    <h2>
+      No hay estudiantes registrados
+    </h2>
+
+    <p>
+      Aún no existen estudiantes en el sistema.
+    </p>
+
+  </div>
+
+  <!-- GRID -->
+  <div class="students-grid">
+
+    <div
+      class="student-card"
+      *ngFor="let student of filteredStudents"
+    >
+
+      <!-- TOP -->
+      <div class="student-top">
+
+        <div class="avatar">
+          {{ student.first_name.charAt(0) }}
+        </div>
+
+        <div
+          class="status"
+          [class.active]="student.is_active"
+        >
+          {{ student.is_active ? 'Activo' : 'Inactivo' }}
+        </div>
+
+      </div>
+
+      <!-- BODY -->
+      <div class="student-body">
+
+        <h3>
+          {{ student.full_name }}
+        </h3>
+
+        <p>
+          <strong>Documento:</strong>
+          {{ student.document_number }}
+        </p>
+
+        <p>
+          <strong>Grado:</strong>
+          {{ student.grade }}
+        </p>
+
+        <p>
+          <strong>Acudiente:</strong>
+          {{ student.guardian_name }}
+        </p>
+
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="student-actions">
+
+        <button
+          class="btn-view"
+          [routerLink]="['/students', student.id]"
+>
+  Ver perfil
+</button>
+
+        <button class="btn-edit">
+          Editar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
