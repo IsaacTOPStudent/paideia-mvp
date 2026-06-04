@@ -1,1 +1,77 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+
+  <div class="welcome-card">
+
+    <h1>Bienvenido a Paideia</h1>
+
+    <p>
+      Sistema de Inclusión Educativa
+    </p>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <h3>Total estudiantes</h3>
+
+      <span>
+        {{ totalStudents }}
+      </span>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h3>Activos</h3>
+
+      <span>
+        {{ activeStudents }}
+      </span>
+
+    </div>
+
+    <div class="stat-card">
+
+      <h3>Inactivos</h3>
+
+      <span>
+        {{ inactiveStudents }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="students-card">
+
+    <h2>
+      Últimos estudiantes registrados
+    </h2>
+
+    <div
+      *ngFor="let student of recentStudents"
+      class="student-row"
+    >
+
+      <div>
+
+        <strong>
+          {{ student.full_name }}
+        </strong>
+
+      </div>
+
+      <div>
+
+        {{ student.grade }}
+
+      </div>
+
+    </div>
+
+  </div>
+  
+
+</div>

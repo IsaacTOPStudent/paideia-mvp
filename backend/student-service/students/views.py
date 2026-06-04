@@ -150,7 +150,7 @@ def student_list(request):
     }
 )
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def student_detail(request, student_id):
     """
     GET /api/students/{id}/

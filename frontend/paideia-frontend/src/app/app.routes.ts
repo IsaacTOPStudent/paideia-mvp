@@ -14,6 +14,8 @@ import { authGuard } from './core/auth/guards/auth.guard';
 
 import { StudentProfileComponent } from './features/students/pages/student-profile/student-profile.component';
 
+import { StudentEditComponent } from './features/students/pages/student-edit/student-edit.component';
+
 export const routes: Routes = [
 
   // LOGIN
@@ -57,6 +59,10 @@ export const routes: Routes = [
       {
         path: 'students/:id',
         component: StudentProfileComponent
+      },
+      {
+        path: 'students/:id/edit',
+        component: StudentEditComponent
       }
 
     ]

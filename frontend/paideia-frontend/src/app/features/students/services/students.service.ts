@@ -32,5 +32,10 @@ export class StudentsService {
     );
 
   }
+  getStudentById(id: number) {
+    return this.http.get<StudentRegister>(
+      `${this.apiUrl}${id}/`
+    );
+  }
 
 }
