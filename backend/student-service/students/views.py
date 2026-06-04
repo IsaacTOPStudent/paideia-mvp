@@ -37,7 +37,7 @@ student_repository = DjangoStudentRepository()
     }
 )
 @api_view(['POST'])
-@permission_classes([IsSecretary])
+@permission_classes([AllowAny])
 def student_register(request):
 
     serializer = StudentRegisterSerializer(data=request.data)
@@ -90,7 +90,7 @@ def student_register(request):
     }
 )
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def student_list(request):
     try:
         use_case = ListStudentsUseCase(student_repository)
@@ -150,7 +150,7 @@ def student_list(request):
     }
 )
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def student_detail(request, student_id):
     """
     GET /api/students/{id}/

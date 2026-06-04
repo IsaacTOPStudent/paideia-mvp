@@ -1,0 +1,126 @@
+<div *ngIf="loading" class="loading-container">
+  <h2>Cargando perfil...</h2>
+</div>
+
+<div *ngIf="!loading && student" class="profile-container">
+
+  <!-- HEADER -->
+  <div class="profile-header">
+
+    <div class="avatar">
+      {{ student.first_name.charAt(0) }}
+    </div>
+
+    <div>
+      <h1>{{ student.full_name }}</h1>
+
+      <p>
+        {{ student.gender_display }}
+        •
+        {{ student.age }} años
+      </p>
+
+      <span
+        class="status"
+        [class.active]="student.is_active"
+      >
+        {{ student.is_active ? 'Activo' : 'Inactivo' }}
+      </span>
+    </div>
+
+  </div>
+
+  <!-- DATOS ACADÉMICOS -->
+  <div class="card">
+
+    <h2>Información académica</h2>
+
+    <div class="grid">
+
+      <div>
+        <strong>Documento</strong>
+        <p>{{ student.document_number }}</p>
+      </div>
+
+      <div>
+        <strong>Tipo documento</strong>
+        <p>{{ student.document_type }}</p>
+      </div>
+
+      <div>
+        <strong>Grado</strong>
+        <p>{{ student.grade }}</p>
+      </div>
+
+      <div>
+        <strong>Sección</strong>
+        <p>{{ student.section }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ACUDIENTE -->
+  <div class="card">
+
+    <h2>Acudiente</h2>
+
+    <div class="grid">
+
+      <div>
+        <strong>Nombre</strong>
+        <p>{{ student.guardian_name }}</p>
+      </div>
+
+      <div>
+        <strong>Teléfono</strong>
+        <p>{{ student.guardian_phone }}</p>
+      </div>
+
+      <div>
+        <strong>Correo</strong>
+        <p>{{ student.guardian_email }}</p>
+      </div>
+
+      <div>
+        <strong>Parentesco</strong>
+        <p>{{ student.guardian_relationship }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- DIRECCIÓN -->
+  <div class="card">
+
+    <h2>Información socioeconómica</h2>
+
+    <div class="grid">
+
+      <div>
+        <strong>Dirección</strong>
+        <p>{{ student.address }}</p>
+      </div>
+
+      <div>
+        <strong>Barrio</strong>
+        <p>{{ student.neighborhood }}</p>
+      </div>
+
+      <div>
+        <strong>Ciudad</strong>
+        <p>{{ student.city }}</p>
+      </div>
+
+      <div>
+        <strong>Estrato</strong>
+        <p>{{ student.socioeconomic_stratum }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

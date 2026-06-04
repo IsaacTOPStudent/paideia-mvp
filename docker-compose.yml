@@ -33,7 +33,7 @@ services:
           - .env
         environment: 
           DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-          JWT_SECRET: ${JWT_SECRET}
+          SECRET_KEY: ${JWT_SECRET}
           JWT_EXPIRATION: 1800
         ports: 
           - "8001:8000"
@@ -52,9 +52,12 @@ services:
           context: ./backend/student-service
           dockerfile: Dockerfile
         container_name: paideia-students
+        env_file:
+            - .env
         environment: 
           DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
           AUTH_SERVICE_URL: http://auth-service:8000
+          SECRET_KEY: ${JWT_SECRET}
         ports:
           - "8002:8000"
         volumes:
@@ -75,6 +78,7 @@ services:
         environment: 
           DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
           AUTH_SERVICE_URL: http://auth-service:8000
+          SECRET_KEY: ${JWT_SECRET}
         ports:
           - "8003:8000"
         volumes:
@@ -95,6 +99,7 @@ services:
         environment:
           DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
           AUTH_SERVICE_URL: http://auth-service:8000
+          SECRET_KEY: ${JWT_SECRET}
         ports:
           - "8004:8000"
         volumes:
