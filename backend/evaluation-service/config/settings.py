@@ -84,16 +84,28 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': 
-        dj_database_url.config(
-            default=config('DATABASE_URL'),
+DATABASE_URL = config('DATABASE_URL', default=None)
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True
         )
-}
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
-DATABASES['default']['OPTIONS'] = {'options': '-c search_path=evaluations,public'}
+if DATABASES['default'].get('ENGINE') == 'django.db.backends.postgresql':
+    DATABASES['default']['OPTIONS'] = {
+        'options': '-c search_path=evaluations,public'
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -159,3 +171,13 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
 }
+
+STUDENT_SERVICE_URL = os.getenv(
+    "STUDENT_SERVICE_URL",
+    "http://student-service:8002"
+)
+
+DIAGNOSTIC_SERVICE_URL = os.getenv(
+    "DIAGNOSTIC_SERVICE_URL",
+    "http://diagnostic-service:8003"
+)
