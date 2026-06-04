@@ -1,0 +1,39 @@
+from django.conf import settings
+
+from src.infrastructure.external_services.http_student_service import (
+    HttpStudentService
+)
+
+from src.infrastructure.external_services.http_characterization_service import (
+    HttpCharacterizationService
+)
+
+from src.infrastructure.repositories.django_evaluation_repository import DjangoEvaluationRepository
+from src.infrastructure.repositories.django_observation_repository import DjangoObservationRepository
+
+from src.application.use_cases.register_evaluation import RegisterEvaluationUseCase
+from src.application.use_cases.register_observation import RegisterObservationUseCase
+from src.application.use_cases.get_longitudinal_history import GetLongitudinalHistoryUseCase
+from src.application.use_cases.list_evaluations import ListEvaluationsUseCase
+from src.application.use_cases.list_observations import ListObservationsUseCase
+
+evaluation_repository = DjangoEvaluationRepository()
+observation_repository = DjangoObservationRepository()
+
+student_service = HttpStudentService(
+    settings.STUDENT_SERVICE_URL
+)
+
+characterization_service = HttpCharacterizationService(
+    settings.DIAGNOSTIC_SERVICE_URL
+)
+
+register_evaluation_use_case = RegisterEvaluationUseCase(repository=evaluation_repository, student_service=student_service, characterization_service=characterization_service)
+
+register_observation_use_case = RegisterObservationUseCase(repository=observation_repository, student_service=student_service, characterization_service=characterization_service)
+
+get_longitudinal_history_use_case = GetLongitudinalHistoryUseCase(evaluation_repository=evaluation_repository, observation_repository=observation_repository, student_service=student_service, characterization_service=characterization_service)
+
+list_evaluations_use_case = ListEvaluationsUseCase(evaluation_repository, student_service)
+
+list_observations_use_case = ListObservationsUseCase(repository=observation_repository, student_service=student_service)
