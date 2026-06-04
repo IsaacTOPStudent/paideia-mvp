@@ -1,9 +1,9 @@
 from typing import Optional, List
 from datetime import datetime 
 from students.models import StudentModel
-from ...domain.entities.student import Student, Gender
-from ...domain.ports.student_repository import StudentRepository
-from ...domain.exceptions import StudentAlreadyExistsError
+from src.domain.entities.student import Student, Gender
+from src.domain.ports.student_repository import StudentRepository
+from src.domain.exceptions import StudentAlreadyExistsError
 
 class DjangoStudentRepository(StudentRepository):
     """

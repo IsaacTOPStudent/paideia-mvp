@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Optional, List
-from ..entities.student import Student 
+from src.domain.entities.student import Student 
 
 class StudentRepository(ABC):
     """
