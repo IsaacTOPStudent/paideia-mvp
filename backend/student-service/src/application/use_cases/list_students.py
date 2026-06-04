@@ -1,6 +1,6 @@
 from typing import List
-from ...domain.entities.student import Student 
-from ...domain.ports.student_repository import StudentRepository
+from src.domain.entities.student import Student 
+from src.domain.ports.student_repository import StudentRepository
 
 class ListStudentsUseCase:
 
